@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRedis使用指南</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1><a id="PRedis_0"></a>PRedis使用指南</h1>
+<h2><a id="Redis_2"></a>Redis简介</h2>
+<ol>
+<li>Redis：remote dictionary server远程字典服务器</li>
+<li>Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。</li>
+<li>Redis 与其他 key - value 缓存产品有以下三个特点：</li>
+</ol>
+<ul>
+<li>Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</li>
+<li>Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。</li>
+<li>Redis支持数据的备份，即master-slave模式的数据备份。</li>
+</ul>
+<h2><a id="PRedis_12"></a>PRedis简介</h2>
+<p>提供了一个Redis的网站客户端，不用每次在终端输入命令，可以直接使用PRedis直接操作。</p>
+<pre><code class="prism language-bash">redis-server /myredis/redis.conf 
+redis-cli -p6379
+</code></pre>
+<h2><a id="PRedis_v101_19"></a>PRedis v1.0.1使用指南</h2>
+<blockquote>
+<p><strong>本地测试环境</strong><br>
+系统：deepin15.8<br>
+软件：redis-5.0.0<br>
+下面演示有右边在deepin上Terminal对比<br>
+下面结果返回的都是数组或者bool</p>
+</blockquote>
+<h4><a id="1__27"></a>1. 登录</h4>
+<ul>
+<li>输入host地址或主机名：127.0.0.1</li>
+<li>输入Redis配置的端口：  默认是<strong>6379</strong></li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117115837710.png">
+</div>
+<blockquote>
+<p>输入不能为空或者输错，链接失败返回信息：</p>
+<pre><code class="prism language-bash">Uncaught exception <span class="token string">'PhpRedisException'</span> with message <span class="token string">'无法连接redis服务器：拒绝连接'</span> 
+</code></pre>
+</blockquote>
+<h4><a id="2__46"></a>2. 验证是否登录</h4>
+<p>如果没有登录，不允许进行数据操作，返回登录界面</p>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117140432455.png">
+</div>
+<h4><a id="3_ping_53"></a>3. 验证是否连通：ping</h4>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117140539900.png">
+</div>
+<h4><a id="4_option_key_value_59"></a>4. 输入格式：option， key， value</h4>
+<blockquote>
+<p><strong>注意每个后面跟着“，”和空格“ ”</strong></p>
+</blockquote>
+<h4><a id="5_dbsize_62"></a>5. 查看数据库的容量：dbsize</h4>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117140931593.png">
+</div>
+<h4><a id="6_key_68"></a>6. key</h4>
+<ul>
+<li>查看所有的key：keys，*</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117141522162.png">
+</div>
+<ul>
+<li>设置key：set, key, value</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117141748164.png">
+</div>
+<ul>
+<li>获取key的值:get, key</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117141927112.png">
+</div>
+<ul>
+<li>删除key的值:del, key</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117142222310.png">
+</div>
+<ul>
+<li>查看键过期时间：ttl, key</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117142415135.png">
+</div>
+<blockquote>
+<p>-1表示永不过期，-2表示已过期<br>
+如果过期get与keys *得不到</p>
+</blockquote>
+<ul>
+<li>设置键过期时间：expire， key， seconds</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117142731793.png">
+</div>
+<blockquote>
+<p>本地设置十秒的过期时间，但是终端显示7秒，原因：<br>
+因为运行开始便开始计时， 等我输入终端已经过去了三秒<br>
+十秒过去后：ttl显示为-2表示已经过期</p>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117142938463.png">
+</div>
+</blockquote>
+<h4><a id="7stringvalue_111"></a>7.string（单值单value）</h4>
+<ul>
+<li>查看字符串长度：strlen， key</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117143430837.png">
+</div>
+<ul>
+<li>在字符串后面添加字符串：append， key， value</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/2018111714364555.png">
+</div>
+&gt;注意看终端，一开始是helllostring，添加后变成helllostringhello
+<ul>
+<li>数字的自增：incr， key</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117144101392.png">
+</div>
+<blockquote>
+<p>注意看终端，一开始是3，添加后变成4</p>
+</blockquote>
+<ul>
+<li>数字的自增：dncr， key</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117144258546.png">
+</div>
+<blockquote>
+<p>注意看终端，一开始是4，添加后变成3</p>
+</blockquote>
+<ul>
+<li>设置键过期时间：setex， key， seconds， value</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/201811171446441.png">
+</div>
+<blockquote>
+<p>本地设置二十秒的过期时间，但是终端显示十秒，原因：<br>
+因为运行开始便开始计时， 等我输入终端已经过去了十秒<br>
+二十秒过去后：ttl显示为-2表示已经过期</p>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117144701928.png">
+</div>
+</blockquote>
+<ul>
+<li>设置键：setnx， key， value</li>
+</ul>
+<blockquote>
+<p>set if not exist，如果不存在则设置值返回1，存在返回0</p>
+</blockquote>
+<p>当key不存在返回的情况:1</p>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117145201954.png">
+</div>
+<p>当key存在返回的情况：0</p>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117145313984.png">
+</div>
+<ul>
+<li>设置多个值：mset, key1, value1, key2, value2, key3, value3…</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117145752502.png">
+</div>
+<ul>
+<li>获得多个值：mget， key1， key2， key3…</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117145736458.png">
+</div>
+<h4><a id="8listvalue_179"></a>8.list（单值多value）</h4>
+<ul>
+<li>插入：lpush/rpush， list， value<br>
+下面演示全部以lpush为例，rpush与lpush相反，具体请参考redis语法</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117150448121.png">
+</div>
+<ul>
+<li>输出：lrange， list， 0， -1</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117150747356.png">
+</div>
+<ul>
+<li>pop弹出一个：lpop/rpop, list<br>
+下面演示全部以lpop为例，rpop与lpop相反，具体请参考redis语法</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117151213234.png">
+</div>
+<blockquote>
+<p>为什么弹出与终端不一样？<br>
+因为5在网页已经pop，在终端是pop下一个4</p>
+</blockquote>
+<ul>
+<li>取第x个：lindex， list， x</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117151525422.png">
+</div>
+<ul>
+<li>求list的长度：llen， list</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117151732185.png">
+</div>
+<ul>
+<li>将list第x位设置成值：lset， list， x， value</li>
+</ul>
+<blockquote>
+<p>注意列表是从0开始的</p>
+</blockquote>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117152843980.png">
+</div>
+<ul>
+<li>值前插：linsert, list, before, value1, value2</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117153639561.png">
+</div>
+<ul>
+<li>值后插：linsert, list, after, value1, value2</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117153658823.png">
+</div>
+<h4><a id="8set_233"></a>8.set（单值多集合）</h4>
+<blockquote>
+<p>与list的区别是不能插入重复值</p>
+</blockquote>
+<ul>
+<li>插入：sadd, set, value1, value2, value3…<br>
+当插入没有重复</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117155017325.png">
+</div>
+<p>当插入重复时自动去掉重复</p>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117155039514.png">
+</div>
+<ul>
+<li>查看集合：smembers, set</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117155142631.png">
+</div>
+<ul>
+<li>查看set里面有几个值：scard， set</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/2018111715543413.png">
+</div>
+<ul>
+<li>删除set里面的值：srem， set， value</li>
+</ul>
+<blockquote>
+<p>删除3，下面演示是否存在3</p>
+</blockquote>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117155644366.png">
+</div>
+<ul>
+<li>判断集合里面是否存在值：sismember， set， value<br>
+当值存在返回1</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117160019151.png">
+</div>
+<p>当值不存在返回0</p>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117160038731.png">
+</div>
+<ul>
+<li>从集合中随机返回x个随机数：srandmember, set, x</li>
+</ul>
+ <div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117160544774.png">
+</div>
+<ul>
+<li>从集合中pop一个：spop， set</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117160858494.png">
+</div>
+<ul>
+<li>从集合1中第x个移到集合2：smove， set01， set02， x</li>
+</ul>
+<blockquote>
+<p>set04一开始只有7,8,9；从set01移入第一个</p>
+</blockquote>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117161151731.png">
+</div>
+<ul>
+<li>求两个几个的交叉并集：<br>
+1.交集：sdiff, set01, set02<br>
+2.差集：sinter, set01, set02<br>
+3.并集：sunion, set01, set02<br>
+下面只演示并集</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/2018111716154063.png">
+</div>
+<h4><a id="9_hashKVV_304"></a>9. hash（KV模式不变，但V是一个键值对）</h4>
+<ul>
+<li>为散列设置值：hmset， name， key1， value1， key2， value2， key3， value3…</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117162914940.png">
+</div>
+<ul>
+<li>查询：hmget，name， key1， key2， key3</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163011329.png">
+</div>
+<ul>
+<li>查看所有key：hkeys， name</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163135222.png">
+</div>
+<ul>
+<li>查看所有value：hvals， name</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163150714.png">
+</div>
+<ul>
+<li>查询所有值：hgetall， name</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163231762.png">
+</div>
+<ul>
+<li>删除某个key：hdel， name， key</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/2018111716333614.png">
+</div>
+<ul>
+<li>判断是否有某个key：hexists， name， key<br>
+存在返回1</li>
+</ul>
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163458491.png">
+</div>
+不存在返回0
+<div align="center">
+<img src="https://img-blog.csdnimg.cn/20181117163531235.png">
+</div>
+<h4><a id="10zsetset_351"></a>10.zset：参考set</h4>
+</div>
+</body>
+
+</html>
