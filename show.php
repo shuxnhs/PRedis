@@ -45,7 +45,7 @@ if(isset($_SESSION['state'])){
         <nav>
             <ul class="nav nav-pills pull-right">
                 <li role="presentation"><a href="teach.html">帮助</a></li>
-                <li role="presentation"><a href="#">反馈</a></li>
+                <li role="presentation"><a href="https://github.com/shuxnhs/PRedis">反馈</a></li>
                 <li role="presentation"><a href="logout.php" ">退出</a></li>
             </ul>
         </nav>
